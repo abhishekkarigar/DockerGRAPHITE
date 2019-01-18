@@ -1,0 +1,30 @@
+version: '3'
+services:
+  graphite:
+    image: graphiteapp/graphite-statsd:latest
+    container_name: graphite
+    restart: always
+    networks:
+      - grafana-net
+    ports:
+      - "80:80"
+      - "2003-2004:2003-2004"
+      - "2023-2024:2023-2024"
+      - "8125:8125/udp"
+      - "8126:8126"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    links:
+      - graphite
+    ports:
+      - "3000:3000"
+    networks:
+      - grafana-net
+
+  
+networks:
+  grafana-net:
+
